@@ -4,11 +4,14 @@ using System.Text;
 
 namespace MyHospitalCalendar.Core.DTOs
 {
-    public class DayDTO
+    public class ShiftTableDTO
     {
         public string DayName { get; set; }
         public int DayNumber { get; set; }
         public bool IsDayOff { get; set; }
-        public List<RoutineDTO> Routines { get; set; }
+        public DateTime ShiftStart { get; set; }
+        public DateTime ShiftEnd { get; set; }
+        public List<PersonDTO> AvailablePersons { get; set; }
+        public object ChoosenPerson { get; set; }
     }
 }
