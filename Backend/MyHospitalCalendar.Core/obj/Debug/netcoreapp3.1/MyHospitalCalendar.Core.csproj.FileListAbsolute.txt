@@ -1,9 +1,0 @@
-C:\Users\f.massimi\Personal\MyHospitalCalendar\Backend\MyHospitalCalendar.Core\bin\Debug\netcoreapp3.1\MyHospitalCalendar.Core.deps.json
-C:\Users\f.massimi\Personal\MyHospitalCalendar\Backend\MyHospitalCalendar.Core\bin\Debug\netcoreapp3.1\MyHospitalCalendar.Core.dll
-C:\Users\f.massimi\Personal\MyHospitalCalendar\Backend\MyHospitalCalendar.Core\bin\Debug\netcoreapp3.1\MyHospitalCalendar.Core.pdb
-C:\Users\f.massimi\Personal\MyHospitalCalendar\Backend\MyHospitalCalendar.Core\obj\Debug\netcoreapp3.1\MyHospitalCalendar.Core.AssemblyInfoInputs.cache
-C:\Users\f.massimi\Personal\MyHospitalCalendar\Backend\MyHospitalCalendar.Core\obj\Debug\netcoreapp3.1\MyHospitalCalendar.Core.AssemblyInfo.cs
-C:\Users\f.massimi\Personal\MyHospitalCalendar\Backend\MyHospitalCalendar.Core\obj\Debug\netcoreapp3.1\MyHospitalCalendar.Core.csproj.CoreCompileInputs.cache
-C:\Users\f.massimi\Personal\MyHospitalCalendar\Backend\MyHospitalCalendar.Core\obj\Debug\netcoreapp3.1\MyHospitalCalendar.Core.dll
-C:\Users\f.massimi\Personal\MyHospitalCalendar\Backend\MyHospitalCalendar.Core\obj\Debug\netcoreapp3.1\MyHospitalCalendar.Core.pdb
-C:\Users\f.massimi\Personal\MyHospitalCalendar\Backend\MyHospitalCalendar.Core\obj\Debug\netcoreapp3.1\MyHospitalCalendar.Core.csprojAssemblyReference.cache
