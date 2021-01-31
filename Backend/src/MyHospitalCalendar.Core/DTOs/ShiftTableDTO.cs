@@ -13,5 +13,6 @@ namespace MyHospitalCalendar.Core.DTOs
         public DateTime ShiftEnd { get; set; }
         public List<PersonDTO> AvailablePersons { get; set; }
         public object ChoosenPerson { get; set; }
+        public bool NoChoice { get; set; }
     }
 }

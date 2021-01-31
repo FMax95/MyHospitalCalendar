@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\MyHospitalCalendar.Core\MyHospitalCalendar.Core.csproj" />
-    <ProjectReference Include="..\..\MyHospitalCalendar.Infrastructure\MyHospitalCalendar.Infrastructure.csproj" />
+    <ProjectReference Include="..\MyHospitalCalendar.Core\MyHospitalCalendar.Core.csproj" />
+    <ProjectReference Include="..\MyHospitalCalendar.Infrastructure\MyHospitalCalendar.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

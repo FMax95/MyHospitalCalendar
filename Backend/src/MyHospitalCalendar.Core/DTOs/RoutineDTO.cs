@@ -6,7 +6,7 @@ namespace MyHospitalCalendar.Core.DTOs
 {
     public class RoutineDTO
     {
-        public TimeSpan DateStart { get; set; }
-        public TimeSpan DateEnd { get; set; }
+        public DateTime DateStart { get; set; }
+        public DateTime DateEnd { get; set; }
     }
 }

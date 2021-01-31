@@ -8,7 +8,7 @@ namespace MyHospitalCalendar.Core.Test.Builders
 {
     public class PersonDTOBuilder
     {
-        private Guid _id = new Guid("1");
+        private Guid _id = new Guid();
         private string _name = "Nicola";
         private decimal _maxHours = 18;
         private List<DayDTO> _notAvailableDays = new List<DayDTO>();

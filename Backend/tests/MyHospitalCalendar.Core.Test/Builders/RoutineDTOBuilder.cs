@@ -7,16 +7,16 @@ namespace MyHospitalCalendar.Core.Test.Builders
 {
     public class RoutineDTOBuilder
     {
-        private TimeSpan _dateStart = new TimeSpan(0, 0, 0);
+        private DateTime _dateStart = new DateTime(2021,1,4,0, 0, 0);
 
-        private TimeSpan _dateEnd = new TimeSpan(23, 59, 59);
+        private DateTime _dateEnd = new DateTime(2021, 1, 4, 23, 59, 59);
 
-        public RoutineDTOBuilder WithDateStart(TimeSpan val)
+        public RoutineDTOBuilder WithDateStart(DateTime val)
         {
             this._dateStart = val;
             return this;
         }
-        public RoutineDTOBuilder WithDateEnd(TimeSpan val)
+        public RoutineDTOBuilder WithDateEnd(DateTime val)
         {
             this._dateEnd = val;
             return this;
