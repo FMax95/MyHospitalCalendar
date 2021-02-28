@@ -4,11 +4,11 @@ using System.Text;
 
 namespace MyHospitalCalendar.Core.DTOs
 {
-    public class WeekDTO
+    public class MonthDTO
     {
-        public int WeekNumber { get; set; }
+        public int MonthNumber { get; set; }
         public DateTime DateStart { get; set; }
-        public DateTime DateEnd { get; set; }    
-        public List<DayDTO> Days { get; set; }
+        public DateTime DateEnd { get; set; }
+        public List<RoutineDTO> Routines { get; set; }
     }
 }

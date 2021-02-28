@@ -7,6 +7,6 @@ namespace MyHospitalCalendar.Core.Services.Interfaces
 {
     public interface ICalendarService
     {
-        List<ShiftTableDTO> CreateCalendar(WeekDTO week, List<PersonDTO> persons);
+        List<ShiftTableDTO> CreateCalendar(MonthDTO week, List<PersonDTO> persons);
     }
 }

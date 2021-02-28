@@ -6,13 +6,15 @@ namespace MyHospitalCalendar.Core.DTOs
 {
     public class ShiftTableDTO
     {
-        public string DayName { get; set; }
-        public int DayNumber { get; set; }
-        public bool IsDayOff { get; set; }
+        public ShiftTableDTO() 
+        {
+            //this.NoChoice = true;
+        }
+        public DateTime Date { get; set; }
         public DateTime ShiftStart { get; set; }
         public DateTime ShiftEnd { get; set; }
         public List<PersonDTO> AvailablePersons { get; set; }
-        public object ChoosenPerson { get; set; }
+        public string ChoosenPerson { get; set; }
         public bool NoChoice { get; set; }
     }
 }

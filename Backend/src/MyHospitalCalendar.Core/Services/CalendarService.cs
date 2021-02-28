@@ -11,60 +11,63 @@ namespace MyHospitalCalendar.Core.Services
     public class CalendarService : ICalendarService
     {
 
-        public List<ShiftTableDTO> CreateCalendar(WeekDTO week, List<PersonDTO> persons)
+        public List<ShiftTableDTO> CreateCalendar(MonthDTO month, List<PersonDTO> persons)
         {
             List<ShiftTableDTO> routines = new List<ShiftTableDTO>();
             WeekOutputDTO output = new WeekOutputDTO();
-            foreach (DayDTO day in week.Days)
+            foreach (RoutineDTO routine in month.Routines)
             {
-                foreach (RoutineDTO routine in day.Routines)
+                //As first thing build just the availability table, not considering max hours and so on.
+
+                List<PersonDTO> availableDocs = persons.Where(p => p.NotAvailableRoutines.Any(r => (r.DateStart < routine.DateEnd &&
+                                                                                                routine.DateStart < r.DateEnd)) == false)
+                                                        .ToList();
+
+                //Build the availability table
+                routines.Add(new ShiftTableDTO()
                 {
-                    //As first thing build just the availability table, not considering max hours and so on.
+                    Date = routine.DateStart.Date,
+                    ShiftStart = routine.DateStart,
+                    ShiftEnd = routine.DateEnd,
+                    AvailablePersons = availableDocs
+                });
 
-                    List<PersonDTO> availableDocs = persons.Where(p => (p.NotAvailableDays.Any(y => y.DayNumber == day.DayNumber) == false ||
-                                                                      (p.NotAvailableDays.Where(u => u.DayNumber == day.DayNumber)
-                                                                                         .Any(r =>
-                                                                                             r.Routines.Any(x => (x.DateStart < routine.DateEnd &&
-                                                                                                                  routine.DateStart < x.DateEnd) == false) == false) == false)))
-                                                            .ToList();
+            }
 
-                    //Build the availability table
-                    routines.Add(new ShiftTableDTO()
+            List<ShiftTableDTO> startingPoint = routines;
+            int recursivityLevel = -1;
+            while ((routines.Where(x => x.NoChoice).Count() > 0 && recursivityLevel < 10) || recursivityLevel == -1)
+            {
+                recursivityLevel++;
+                routines = startingPoint;
+                PersonDTO selected = null;
+                foreach (ShiftTableDTO shift in routines.OrderBy(x => x.ShiftStart))
+                {
+                    selected = ChoosePerson(shift: shift,
+                                                remainingShifts: routines.Where(x => (x.ChoosenPerson != null || x.NoChoice == false) &&
+                                                                         (x.ShiftStart > shift.ShiftStart))
+                                                                                       .ToList(),
+                                                personPreviousShift:selected,
+                                                recursiveLap: recursivityLevel);
+                    if (selected != null)
                     {
-                        IsDayOff = day.IsDayOff,
-                        DayName = day.DayName,
-                        DayNumber = day.DayNumber,
-                        ShiftStart = routine.DateStart,
-                        ShiftEnd = routine.DateEnd,
-                        AvailablePersons = availableDocs
-                    });
-
+                        shift.ChoosenPerson = selected.Name;
+                        selected.EffectiveHours += (shift.ShiftEnd - shift.ShiftStart).Hours;
+                        shift.NoChoice = false;
+                    }
+                    else shift.NoChoice = true;
                 }
             }
-
-            foreach (ShiftTableDTO shift in routines.Where(x=>x.IsDayOff==false).OrderBy(x=>x.ShiftStart))
-            {
-                var selected = ChoosePerson(shift, routines.Where(x => (x.ChoosenPerson != null || x.NoChoice == false) && 
-                                                                 (x.ShiftStart > shift.ShiftStart))
-                                                           .ToList());
-                if (selected != null)
-                {
-                    shift.ChoosenPerson = selected;
-                    selected.EffectiveHours += (shift.ShiftEnd - shift.ShiftStart).Hours;
-                }
-                else shift.NoChoice = true;
-            }
-
             var dt = routines.ToDataTable(); //just for tests
 
             return routines;
         }
 
-        private PersonDTO ChoosePerson(ShiftTableDTO shift, List<ShiftTableDTO> remainingShifts)
+        private PersonDTO ChoosePerson(ShiftTableDTO shift, List<ShiftTableDTO> remainingShifts, PersonDTO personPreviousShift, int recursiveLap)
         {
             List<PersonOverlapsDTO> personOverlaps = new List<PersonOverlapsDTO>();
             //guardo solo coloro che non supererebbero le max hours
-            foreach (var person in shift.AvailablePersons.Where(x => (x.EffectiveHours + (shift.ShiftEnd - shift.ShiftStart).Hours < x.MaxHours)))
+            foreach (var person in shift.AvailablePersons.Where(x => x != personPreviousShift && (x.EffectiveHours + (shift.ShiftEnd - shift.ShiftStart).Hours <= x.MaxHours)))
             {
                 PersonOverlapsDTO personOverlapsDTO = new PersonOverlapsDTO();
                 personOverlapsDTO.Person = person;
@@ -86,10 +89,20 @@ namespace MyHospitalCalendar.Core.Services
                 }
                 personOverlaps.Add(personOverlapsDTO);
             }
-            PersonOverlapsDTO dto = personOverlaps.OrderByDescending(x => x.ShiftOverlapping.Count())
+            //TODO flavio dovresti creare un rank dato dall'overlapping dei turni, ed a parità di rank ordinare per effective hours
+            var choosablePersons = personOverlaps.OrderBy(x=>x.Person.EffectiveHours)
+                                    .ThenByDescending(x => x.ShiftOverlapping.Count())
                                  .ThenByDescending(y => y.ShiftOverlapping.Sum(z => z.WithMany))
-                                 .ThenBy(z=>z.Person.EffectiveHours)
-                                 .FirstOrDefault();
+                                 .ToList();
+            PersonOverlapsDTO dto = null;
+            if (choosablePersons.Any())
+            {
+                if (recursiveLap == 0)
+                    dto = choosablePersons.FirstOrDefault();
+                else if (recursiveLap > choosablePersons.Count())
+                    dto = choosablePersons.ElementAt(recursiveLap);
+                else dto = choosablePersons.ElementAt(new Random().Next(0, choosablePersons.Count()));
+            }
             return dto != null ? dto.Person : null;
         }
     }

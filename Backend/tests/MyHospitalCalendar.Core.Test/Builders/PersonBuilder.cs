@@ -10,8 +10,8 @@ namespace MyHospitalCalendar.Core.Test.Builders
     {
         private Guid _id = new Guid();
         private string _name = "Nicola";
-        private decimal _maxHours = 18;
-        private List<DayDTO> _notAvailableDays = new List<DayDTO>();
+        private decimal _maxHours = 9999;
+        private List<RoutineDTO> _notAvailableRoutines = new List<RoutineDTO>();
 
         public PersonDTOBuilder WithName(string val)
         {
@@ -24,9 +24,9 @@ namespace MyHospitalCalendar.Core.Test.Builders
             return this;
         }
 
-        public PersonDTOBuilder WithNotAvailableDay(DayDTOBuilder val)
+        public PersonDTOBuilder WithNotAvailableRoutine(RoutineDTOBuilder val)
         {
-            this._notAvailableDays.Add(val);
+            this._notAvailableRoutines.Add(val);
             return this;
         }
 
@@ -37,7 +37,7 @@ namespace MyHospitalCalendar.Core.Test.Builders
                 Id = builder._id,
                 Name = builder._name,
                 MaxHours = builder._maxHours,
-                NotAvailableDays = builder._notAvailableDays
+                NotAvailableRoutines = builder._notAvailableRoutines
             };
         }
     }
